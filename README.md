@@ -18,3 +18,13 @@
 <img src="image-3.png" width="45%" alt="2 화면">
 </div>
 <br>
+
+## 4주차 데이터베이스 수정 완료
+실습1: 데이터베이스 연동하기
+실습2: 컨트롤 구조 이동하고 모델폴더 생성하기
+실습3: 테스트db 페이지 만들기
+ <div align="center">
+<img src="image-4.png" width="45%" alt="1 화면">
+<img src="image-5.png" width="45%" alt="2 화면">
+</div>
+<br>
