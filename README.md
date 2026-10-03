@@ -23,8 +23,19 @@
 실습1: 데이터베이스 연동하기
 실습2: 컨트롤 구조 이동하고 모델폴더 생성하기
 실습3: 테스트db 페이지 만들기
- <div align="center">
+<div align="center">
 <img src="image-4.png" width="45%" alt="1 화면">
 <img src="image-5.png" width="45%" alt="2 화면">
+</div>
+<br>
+
+## 5주차 로그인/로그아웃, 암호화 완료
+실습1: 의존성 모듈 추가하기
+실습2: 로그인 페이지 설정하기
+실습3: 회원가입 페이지 설정하기
+<div align="center">
+<img src="image-6.png" width="45%" alt="1 화면">
+<img src="image-7.png" width="45%" alt="2 화면">
+<img src="image-8.png" width="45%" alt="3 화면">
 </div>
 <br>

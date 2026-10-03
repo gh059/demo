@@ -1,0 +1,48 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.demo.model.service.MemberService;
+import com.example.demo.model.dto.MemberForm;
+
+@Controller // 컨트롤러 어노테이션 명시
+public class MemberController {
+
+    @Autowired
+    MemberService memberService; // 클래스 상단에 객체 주입
+
+    @GetMapping("/login") // 로그인 화면 (POST /login 은 시큐리티가 처리)
+    public String login() {
+        return "login"; // login.html 연결
+    }
+
+    @GetMapping("/signup") // 회원가입 화면
+    public String signupForm(Model model) {
+        model.addAttribute("memberForm", new MemberForm()); // 입력값 유지를 위해 빈 폼 객체 전달
+        return "signup"; // signup.html 연결
+    }
+
+    @PostMapping("/signup") // 회원가입 처리
+    public String signup(MemberForm memberForm, Model model) {
+        
+        // 1. 비밀번호와 비밀번호 확인 일치 검증 추가
+        if (!memberForm.getPassword().equals(memberForm.getPasswordConfirm())) {
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다."); // signup.html의 th:if="${error}"에 표시
+            model.addAttribute("memberForm", memberForm); // 입력했던 값 유지
+            return "signup"; // DB에 저장하지 않고 다시 가입 화면으로 리턴
+        }
+
+        try {
+            memberService.signup(memberForm);
+        } catch (IllegalArgumentException e) { // 중복 아이디 등
+            model.addAttribute("error", e.getMessage()); // ${error}
+            model.addAttribute("memberForm", memberForm); // 입력값 유지
+            return "signup"; // 입력값 유지한 채 다시 가입 화면
+        }
+        return "redirect:/login?signup"; // 성공 -> 로그인 화면
+    }
+}
