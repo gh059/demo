@@ -39,3 +39,16 @@
 <img src="image-8.png" width="45%" alt="3 화면">
 </div>
 <br>
+
+## 6주차 권한(ROLE) 접근 제어, 관리자 페이지 분리 완료
+실습1: 내 정보 + USER 배지 추가하기
+실습2: 내 정보 페이지 만들기
+실습3: 관리자 회원 목록 페이지 만들기
+실습4: 403 접근 거부 테스트
+<div align="center">
+<img src="image-9.png" width="45%" alt="1 화면">
+<img src="image-10.png" width="45%" alt="2 화면">
+<img src="image-11.png" width="45%" alt="3 화면">
+<img src="image-12.png" width="45%" alt="4 화면">
+</div>
+<br>

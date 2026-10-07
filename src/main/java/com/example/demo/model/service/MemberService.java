@@ -1,6 +1,10 @@
 package com.example.demo.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize; // ★ 1. import 추가
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.model.domain.Member;
@@ -39,5 +43,38 @@ public class MemberService implements UserDetailsService { // 로그인을 위�
                 .password(member.getPassword()) // 암호화 값 → matches()로 비교
                 .roles(member.getRole())        // USER → ROLE_USER
                 .build();
+    }
+    
+    // MemberService : 로그인한 아이디로 회원 조회
+    public Member findByUsername(String username) {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "회원이 존재하지 않습니다 : " + username));
+    }
+
+    // 관리자 페이지용: 전체 회원 조회
+    public List<Member> findAll() { 
+        return memberRepository.findAll(Sort.by("id"));
+    }
+
+    // 관리자가 부여할 수 있는 권한 (화면에서 넘어온 값을 그대로 믿지 않는다)
+    private static final List<String> ROLES = List.of("USER", "ADMIN");
+
+    @PreAuthorize("hasRole('ADMIN')") // ★ 2. 관리자만 실행 가능 (2차 잠금)
+    public void changeRole(Long id, String role) { // 권한 변경
+        if (!ROLES.contains(role)) { // 허용된 권한만
+            throw new IllegalArgumentException("허용되지 않는 권한입니다 : " + role);
+        }
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        member.setRole(role);
+        memberRepository.save(member); // UPDATE (id 가 있으면 수정)
+    }
+
+    @PreAuthorize("hasRole('ADMIN')") // ★ 3. 관리자만 실행 가능 (2차 잠금)
+    public void deleteMember(Long id) { // 회원 삭제
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        memberRepository.delete(member); // DELETE
     }
 }
